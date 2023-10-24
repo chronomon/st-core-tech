@@ -10,7 +10,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>st-analysis</module>
+        <module>chapter-5-st-analysis</module>
+        <module>chapter-4-st-storage</module>
+        <module>chapter-7-st-visualization</module>
+        <module>chapter-3-st-basic</module>
+        <module>chapter-6-st-service</module>
     </modules>
 
     <properties>
