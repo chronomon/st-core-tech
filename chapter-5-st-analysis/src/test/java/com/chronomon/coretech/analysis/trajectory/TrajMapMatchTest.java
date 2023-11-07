@@ -1,12 +1,12 @@
 package com.chronomon.coretech.analysis.trajectory;
 
-import com.chronomon.coretech.analysis.trajectory.mapmatch.HmmMapMatcher;
-import com.chronomon.coretech.analysis.trajectory.mapmatch.MapMatchTrajectory;
-import com.chronomon.coretech.analysis.trajectory.model.GpsPoint;
-import com.chronomon.coretech.analysis.trajectory.model.Trajectory;
-import com.chronomon.coretech.analysis.trajectory.road.DirectionEnum;
-import com.chronomon.coretech.analysis.trajectory.road.RoadNetwork;
-import com.chronomon.coretech.analysis.trajectory.road.RoadSegment;
+import com.chronomon.trajectory.mapmatch.HmmMapMatcher;
+import com.chronomon.trajectory.mapmatch.MapMatchTrajectory;
+import com.chronomon.trajectory.model.GpsPoint;
+import com.chronomon.trajectory.model.Trajectory;
+import com.chronomon.trajectory.road.DirectionEnum;
+import com.chronomon.trajectory.road.RoadNetwork;
+import com.chronomon.trajectory.road.RoadSegment;
 import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
