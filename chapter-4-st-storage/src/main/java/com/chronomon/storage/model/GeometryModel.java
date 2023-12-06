@@ -1,13 +1,11 @@
 package com.chronomon.storage.model;
 
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.io.WKBWriter;
 import org.locationtech.jts.io.WKTReader;
-import org.locationtech.jts.operation.distance.DistanceOp;
-
-import java.util.Arrays;
 
 /**
  * 几何模型
@@ -16,6 +14,22 @@ import java.util.Arrays;
  * @date 2023-11-04
  */
 public class GeometryModel {
+    /**
+     * 获取几何WKT
+     */
+    public static String toWkt(Geometry geometry) {
+        return geometry.toText();
+    }
+
+    /**
+     * 获取几何WKB
+     */
+    public static String toWkb(Geometry geometry) {
+        WKBWriter wkbWriter = new WKBWriter();
+        // 将字节数组转为十六进制字符串
+        return WKBWriter.toHex(wkbWriter.write(geometry));
+    }
+
     /**
      * 几何简单性验证
      *
@@ -34,61 +48,17 @@ public class GeometryModel {
         return geometry.isValid();
     }
 
-    /**
-     * 判断两个几何是否相交
-     *
-     * @see Geometry#intersects(Geometry)
-     */
-    public static boolean intersects(Geometry geometry1, Geometry geometry2) {
-        return geometry1.intersects(geometry2);
-    }
-
-    /**
-     * 计算两个几何之间距离
-     *
-     * @see Geometry#distance(Geometry)
-     */
-    public static double distance(Geometry geometry1, Geometry geometry2) {
-        return geometry1.distance(geometry2);
-    }
-
-    /**
-     * 计算两个几何之间最近点
-     *
-     * @see DistanceOp#nearestPoints()
-     */
-    public static Coordinate[] nearest(Geometry geometry1, Geometry geometry2) {
-        DistanceOp distanceOp = new DistanceOp(geometry1, geometry2);
-        return distanceOp.nearestPoints();
-    }
-
-    /**
-     * 九交模型计算
-     *
-     * @see Geometry#relate(Geometry)
-     */
-    public static String relate(Geometry geometry1, Geometry geometry2) {
-        return geometry1.relate(geometry2).toString();
-    }
-
     public static void main(String[] args) throws Exception {
+        // 示例一：WKT、WKB
         WKTReader wktReader = new WKTReader();
+        Point point = (Point) wktReader.read("POINT (1 1)");
+        System.out.println("WKT: " + toWkt(point));  // POINT (1 1)
+        System.out.println("WKB: " + toWkb(point));  // 00000000013FF00000000000003FF0000000000000
 
+        // 示例二：简单性、合法性
         LineString notSimpleLine = (LineString) wktReader.read("LINESTRING (0 0,1 1,1 0,0 1)");
-        System.out.println(isSimple(notSimpleLine));  // false
-
+        System.out.println("simplicity: " + isSimple(notSimpleLine));  // false
         Polygon notValidPolygon = (Polygon) wktReader.read("POLYGON((0 0,0 2,2 2,2 0,0 0), (0 0,0 1,1 1,1 0,0 0))");
-        System.out.println(isValid(notValidPolygon));  // false
-
-        LineString line1 = (LineString) wktReader.read("LINESTRING (0 0,1 1)");
-        LineString line2 = (LineString) wktReader.read("LINESTRING (0 1,1 0)");
-        System.out.println(intersects(line1, line2));  // true
-        System.out.println(distance(line1, line2));  // 0.0
-        System.out.println(Arrays.toString(nearest(line1, line2)));  // [(0.5,0.5),(0.5,0.5)]
-
-        // 湖泊与第一个码头的九交模型计算
-        Polygon lake = (Polygon) wktReader.read("POLYGON((0 0,0 2,2 2,2 0,0 0))");
-        LineString dock = (LineString) wktReader.read("LINESTRING (0 1,1 1)");
-        System.out.println(relate(lake, dock));  // 102F01FF2
+        System.out.println("validity: " + isValid(notValidPolygon));  // false
     }
 }
