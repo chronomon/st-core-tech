@@ -1,9 +1,9 @@
 package com.chronomon.coretech.analysis.trajectory;
 
-import com.chronomon.trajectory.model.GpsPoint;
-import com.chronomon.trajectory.model.Trajectory;
-import com.chronomon.trajectory.staypoint.StayPoint;
-import com.chronomon.trajectory.staypoint.TrajStayPointDetector;
+import com.chronomon.analysis.trajectory.model.GpsPoint;
+import com.chronomon.analysis.trajectory.model.Trajectory;
+import com.chronomon.analysis.trajectory.staypoint.StayPoint;
+import com.chronomon.analysis.trajectory.staypoint.TrajStayPointDetector;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.LineString;

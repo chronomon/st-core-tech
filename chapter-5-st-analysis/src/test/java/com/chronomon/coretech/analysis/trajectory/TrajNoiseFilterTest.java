@@ -1,8 +1,8 @@
 package com.chronomon.coretech.analysis.trajectory;
 
-import com.chronomon.trajectory.filter.TrajNoiseFilter;
-import com.chronomon.trajectory.model.GpsPoint;
-import com.chronomon.trajectory.model.Trajectory;
+import com.chronomon.analysis.trajectory.filter.TrajNoiseFilter;
+import com.chronomon.analysis.trajectory.model.GpsPoint;
+import com.chronomon.analysis.trajectory.model.Trajectory;
 import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
