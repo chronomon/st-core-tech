@@ -108,7 +108,7 @@ public class XZOrderIndex {
 
         // 示例二：指定阶数，创建多个Geometry的XZ-Order索引，输入查询范围，输出查询结果
         XZOrderIndex xz16 = new XZOrderIndex(-180, 180, -90, 90, 31);
-        String filePath = Objects.requireNonNull(ZOrderIndex.class.getResource("/polygons.txt")).getPath();
+        String filePath = Objects.requireNonNull(XZOrderIndex.class.getResource("/polygons.txt")).getPath();
         FileInputStream in = new FileInputStream(filePath);
         InputStreamReader reader = new InputStreamReader(in);
         BufferedReader bufferedReader = new BufferedReader(reader);
