@@ -15,7 +15,7 @@ import java.util.Arrays;
  * @author yuzisheng
  * @date 2023-12-06
  */
-public class TopologyRelation {
+public class GeometryTopologyRelation {
     /**
      * 判断两个几何是否相离
      *

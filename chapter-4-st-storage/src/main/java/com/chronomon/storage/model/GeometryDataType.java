@@ -1,0 +1,61 @@
+package com.chronomon.storage.model;
+
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.io.WKBWriter;
+import org.locationtech.jts.io.WKTReader;
+
+/**
+ * 几何模型
+ *
+ * @author yuzisheng
+ * @date 2023-11-04
+ */
+public class GeometryDataType {
+    /**
+     * 获取几何WKT
+     */
+    public static String toWkt(Geometry geometry) {
+        return geometry.toText();
+    }
+
+    /**
+     * 获取几何WKB
+     */
+    public static String toWkb(Geometry geometry) {
+        WKBWriter wkbWriter = new WKBWriter();
+        // 将字节数组转为十六进制字符串
+        return WKBWriter.toHex(wkbWriter.write(geometry));
+    }
+
+    public static void main(String[] args) throws Exception {
+        // 示例：WKT、WKB
+        WKTReader wktReader = new WKTReader();
+        Point point = (Point) wktReader.read("POINT (1 2)");
+        System.out.println("POINT WKT: " + toWkt(point));  // POINT (1 2)
+        System.out.println("POINT WKB: " + toWkb(point));  // 00000000013FF00000000000004000000000000000
+
+        LineString line = (LineString) wktReader.read("LINESTRING (0 0,1 1,1 2)");
+        System.out.println("LINESTRING WKT: " + toWkt(line));  // LINESTRING (0 0, 1 1, 1 2)
+        System.out.println("LINESTRING WKB: " + toWkb(line));  // 000000000200000003000000000000000000000000000000003FF00000000000003FF00000000000003FF00000000000004000000000000000
+
+        Polygon polygon = (Polygon) wktReader.read("POLYGON ((0 0,4 0,4 4,0 4,0 0),(1 1, 2 1, 2 2, 1 2,1 1))");
+        System.out.println("POLYGON WKT: " + toWkt(polygon));  // POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1))
+        System.out.println("POLYGON WKB: " + toWkb(polygon));  // 000000000300000002000000050000000000000000000000000000000040100000000000000000000000000000401000000000000040100000000000000000000000000000401000000000000000000000000000000000000000000000000000053FF00000000000003FF000000000000040000000000000003FF0000000000000400000000000000040000000000000003FF000000000000040000000000000003FF00000000000003FF0000000000000
+
+        MultiPoint multiPoint = (MultiPoint) wktReader.read("MULTIPOINT ((0 0),(1 2))");
+        System.out.println("MULTIPOINT WKT: " + toWkt(multiPoint));  // MULTIPOINT ((0 0), (1 2))
+        System.out.println("MULTIPOINT WKB: " + toWkb(multiPoint));  // 00000000040000000200000000010000000000000000000000000000000000000000013FF00000000000004000000000000000
+
+        MultiLineString multiLineString = (MultiLineString) wktReader.read("MULTILINESTRING ((0 0,1 1,1 2),(2 3,3 2,5 4))");
+        System.out.println("MULTILINESTRING WKT: " + toWkt(multiLineString));  // MULTILINESTRING ((0 0, 1 1, 1 2), (2 3, 3 2, 5 4))
+        System.out.println("MULTILINESTRING WKB: " + toWkb(multiLineString));  // 000000000500000002000000000200000003000000000000000000000000000000003FF00000000000003FF00000000000003FF00000000000004000000000000000000000000200000003400000000000000040080000000000004008000000000000400000000000000040140000000000004010000000000000
+
+        MultiPolygon multiPolygon = (MultiPolygon) wktReader.read("MULTIPOLYGON (((0 0,4 0,4 4,0 4,0 0),(1 1,2 1,2 2,1 2,1 1)), ((-1 -1,-1 -2,-2 -2,-2 -1,-1 -1)))");
+        System.out.println("MULTIPOLYGON WKT: " + toWkt(multiPolygon));  // MULTIPOLYGON (((0 0, 4 0, 4 4, 0 4, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1)), ((-1 -1, -1 -2, -2 -2, -2 -1, -1 -1)))
+        System.out.println("MULTIPOLYGON WKB: " + toWkb(multiPolygon));  // 000000000600000002000000000300000002000000050000000000000000000000000000000040100000000000000000000000000000401000000000000040100000000000000000000000000000401000000000000000000000000000000000000000000000000000053FF00000000000003FF000000000000040000000000000003FF0000000000000400000000000000040000000000000003FF000000000000040000000000000003FF00000000000003FF000000000000000000000030000000100000005BFF0000000000000BFF0000000000000BFF0000000000000C000000000000000C000000000000000C000000000000000C000000000000000BFF0000000000000BFF0000000000000BFF0000000000000
+
+        GeometryCollection geometryCollection = (GeometryCollection) wktReader.read("GEOMETRYCOLLECTION (POINT (2 3), LINESTRING (2 3,3 4))");
+        System.out.println("GEOMETRYCOLLECTION WKT: " + toWkt(geometryCollection));  // GEOMETRYCOLLECTION (POINT (2 3), LINESTRING (2 3, 3 4))
+        System.out.println("GEOMETRYCOLLECTION WKB: " + toWkb(geometryCollection));  // 0000000007000000020000000001400000000000000040080000000000000000000002000000024000000000000000400800000000000040080000000000004010000000000000
+    }
+}
