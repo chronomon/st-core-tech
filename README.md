@@ -4,9 +4,9 @@
 ## 阅读指引
 ### 第4章：数据存储与索引
 + 4.1、空间数据模型
-  + 4.1.1、空间数据模型 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryModel.java)
-  + 4.1.2、空间数据特性 [[代码链接]]()
-  + 4.1.3、空间拓扑关系 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/TopologyRelation.java)
+  + 4.1.1、空间数据模型 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryDataType.java)
+  + 4.1.2、空间数据特性 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryValidation.java)
+  + 4.1.3、空间拓扑关系 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryTopologyRelation.java)
 + 4.2、时空索引算法
   + 4.2.2、基于树状结构的空间索引
     + KdTreeIndex [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/tree/KdTreeIndex.java)
@@ -43,4 +43,4 @@
   + 5.5.4、A*算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/AStarModel.java)
 + 5.6、地址搜索
   + 5.6.1、正地理编码
-    + 基于地理层级的滑窗模糊匹配算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/address/AddressSearch.java)
+    + 基于地理层级树的滑窗匹配算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/address/AddressSearch.java)
