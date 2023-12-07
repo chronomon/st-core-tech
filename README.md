@@ -40,6 +40,7 @@
     + 深度优先搜索DFS [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/DFSModel.java)
     + 广度优先搜索BFS [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/BFSModel.java)
   + 5.5.2、Dijkstra算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/DijkstraModel.java)
+  + 5.5.3、GBFS算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/GBFSModel.java)
   + 5.5.4、A*算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/AStarModel.java)
 + 5.6、地址搜索
   + 5.6.1、正地理编码

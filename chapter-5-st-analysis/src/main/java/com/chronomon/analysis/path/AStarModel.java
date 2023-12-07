@@ -20,9 +20,9 @@ public class AStarModel {
      *
      * @see AStarShortestPath
      */
-    private final AStarShortestPath<Node, DefaultWeightedEdge> aStarModel;
+    private final AStarShortestPath<AStarNode, DefaultWeightedEdge> aStarModel;
 
-    AStarModel(SimpleWeightedGraph<Node, DefaultWeightedEdge> graph) {
+    AStarModel(SimpleWeightedGraph<AStarNode, DefaultWeightedEdge> graph) {
         aStarModel = new AStarShortestPath<>(graph, new ManhattanDistance());
     }
 
@@ -34,7 +34,7 @@ public class AStarModel {
      * @return 最短路径
      * @see AStarShortestPath#getPath(Object, Object)
      */
-    public GraphPath<Node, DefaultWeightedEdge> getShortestPath(Node startNode, Node endNode) {
+    public GraphPath<AStarNode, DefaultWeightedEdge> getShortestPath(AStarNode startNode, AStarNode endNode) {
         return aStarModel.getPath(startNode, endNode);
     }
 
@@ -48,18 +48,18 @@ public class AStarModel {
                 "......#.",
                 "S######.",
                 "........"};
-        Node startNode = null;  // (6,0)
-        Node endNode = null;  // (0,6)
-        SimpleWeightedGraph<Node, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+        AStarNode startNode = null;  // (6,0)
+        AStarNode endNode = null;  // (0,6)
+        SimpleWeightedGraph<AStarNode, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         // 加载迷宫
-        Node[][] nodes = new Node[labyrinth.length][labyrinth[0].length()];
+        AStarNode[][] nodes = new AStarNode[labyrinth.length][labyrinth[0].length()];
         for (int i = 0; i < labyrinth.length; i++) {
             for (int j = 0; j < labyrinth[0].length(); j++) {
                 if (labyrinth[i].charAt(j) == '#') {
                     continue;
                 }
-                nodes[i][j] = new Node(i, j);
+                nodes[i][j] = new AStarNode(i, j);
                 graph.addVertex(nodes[i][j]);
                 if (labyrinth[i].charAt(j) == 'S') {
                     startNode = nodes[i][j];
@@ -84,22 +84,22 @@ public class AStarModel {
                 Graphs.addEdge(graph, nodes[i][j], nodes[i + 1][j], 1);
             }
         }
-        System.out.println(startNode);
-        System.out.println(endNode);
+        System.out.println("StartNode: " + startNode);
+        System.out.println("EndNode: " + endNode);
 
         AStarModel aStarModel = new AStarModel(graph);
-        GraphPath<Node, DefaultWeightedEdge> shortestPath = aStarModel.getShortestPath(startNode, endNode);
+        GraphPath<AStarNode, DefaultWeightedEdge> shortestPath = aStarModel.getShortestPath(startNode, endNode);
         System.out.println(shortestPath.getWeight());  // 12
         System.out.println(shortestPath.getLength());  // 12
         System.out.println(shortestPath.getVertexList());  // [(6,0),(5,0),(4,0),(3,0),(2,0),(1,0),(0,0),(0,1),(0,2),(0,3),(0,4),(0,5),(0,6)]
     }
 }
 
-class Node {
+class AStarNode {
     private final int x;
     private final int y;
 
-    Node(int x, int y) {
+    AStarNode(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -121,14 +121,14 @@ class Node {
 /**
  * 曼哈顿距离
  */
-class ManhattanDistance implements AStarAdmissibleHeuristic<Node> {
+class ManhattanDistance implements AStarAdmissibleHeuristic<AStarNode> {
     @Override
-    public double getCostEstimate(Node sourceVertex, Node targetVertex) {
+    public double getCostEstimate(AStarNode sourceVertex, AStarNode targetVertex) {
         return Math.abs(sourceVertex.getX() - targetVertex.getX()) + Math.abs(sourceVertex.getY() - targetVertex.getY());
     }
 
     @Override
-    public <E> boolean isConsistent(Graph<Node, E> graph) {
+    public <E> boolean isConsistent(Graph<AStarNode, E> graph) {
         return true;
     }
 }
