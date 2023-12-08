@@ -15,6 +15,7 @@
         <module>chapter-7-st-visualization</module>
         <module>chapter-3-st-basic</module>
         <module>chapter-6-st-service</module>
+        <module>supplements</module>
     </modules>
 
     <properties>
