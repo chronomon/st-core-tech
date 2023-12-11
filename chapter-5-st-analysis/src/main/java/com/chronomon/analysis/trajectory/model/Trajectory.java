@@ -8,6 +8,9 @@ import java.util.List;
 
 /**
  * 轨迹对象：包括对象ID和按照时间戳排序的GPS点序列
+ *
+ * @author wangrubin
+ * @date 2023-11-05
  */
 public class Trajectory {
 

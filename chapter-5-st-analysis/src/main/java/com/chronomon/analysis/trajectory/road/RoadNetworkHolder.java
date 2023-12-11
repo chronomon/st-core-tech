@@ -6,6 +6,12 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * 路网缓存
+ *
+ * @author wangrubin
+ * @date 2023-11-05
+ */
 public class RoadNetworkHolder {
 
     private static final AtomicInteger keyCounter = new AtomicInteger();

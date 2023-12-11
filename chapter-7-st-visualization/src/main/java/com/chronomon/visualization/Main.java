@@ -1,13 +1,18 @@
 package com.chronomon.visualization;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /**
- * @Description
- * @Author Sui Yuan
- * @Date ${DATE} ${TIME}
- * @Version 1.0
+ * 地图服务启动类
+ *
+ * @author wangrubin
+ * @date 2023-11-05
  */
+@SpringBootApplication
 public class Main {
+
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        SpringApplication.run(Main.class, args);
     }
 }

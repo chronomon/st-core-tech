@@ -25,16 +25,19 @@
   + 5.3.2、DBSCAN [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/cluster/DBSCANCluster.java)
 + 5.4、轨迹分析
   + 5.4.1、轨迹预处理
-    + 轨迹去噪 [[代码链接]]()
-    + 驻留点检测 [[代码链接]]()
-    + 轨迹分段 [[代码链接]]()
-    + 路网匹配 [[代码链接]]()
+    + 轨迹去噪 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/filter/TrajNoiseFilter.java)
+    + 驻留点检测 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/staypoint/TrajStayPointDetector.java)
+    + 轨迹分段 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/segment/TrajSegmenter.java)
+    + 路网匹配 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/mapmatch/HmmMapMatcher.java)
   + 5.4.2、轨迹挖掘
     + 轨迹压缩 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/compress/TrajectoryCompress.java)
     + 轨迹相似性 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/similarity/TrajectorySimilarity.java)
     + 轨迹聚类 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/cluster/TrajectoryCluster.java)
     + 时空共现 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/cooccur/SocialStrengthInfer.java)
   + 5.4.3、实时轨迹分析
+    + 实时GPS点排序 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/flink/GpsStreamSortFunction.java)
+    + 实时车辆行驶状态检测 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/flink/TrajStayPointDetectFunction.java)
+    + 实时轨迹地图匹配 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/flink/TrajMapMatchFunction.java)
 + 5.5、路径规划
   + 5.5.1、DFS和BFS
     + 深度优先搜索DFS [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/DFSModel.java)
@@ -45,3 +48,8 @@
 + 5.6、地址搜索
   + 5.6.1、正地理编码
     + 基于地理层级树的滑窗匹配算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/address/AddressSearch.java)
+### 第7章：数据可视化
++ 7.2、时空数据可视化
+  + 7.2.5、 动态矢量切片服务[[代码链接]](chapter-7-st-visualization/src/main/java/com/chronomon/visualization/vector/controller/VectorTileController.java)
+
+ 

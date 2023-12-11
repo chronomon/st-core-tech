@@ -2,10 +2,18 @@ package com.chronomon.analysis.trajectory.filter;
 
 import com.chronomon.analysis.trajectory.model.GpsPoint;
 import com.chronomon.analysis.trajectory.model.Trajectory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.WKTReader;
 
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 轨迹去噪
@@ -81,5 +89,44 @@ public class TrajNoiseFilter {
         }
 
         return cleanTrajectoryList;
+    }
+
+    public static void main(String[] args) throws Exception {
+        List<GpsPoint> gpsList = readGpsPoint();
+        TrajNoiseFilter noiseFilter = new TrajNoiseFilter(10.0);
+        List<Trajectory> subTrajectoryList = noiseFilter.filter(new Trajectory("oid", gpsList, true));
+        System.out.println(subTrajectoryList.size());
+
+        int count = 0;
+        for (Trajectory sub : subTrajectoryList) {
+            count += sub.getNumPoints();
+        }
+
+        System.out.println("raw:" + gpsList.size());
+        System.out.println("clean:" + count);
+
+        if (subTrajectoryList.size() == 1) {
+            System.out.println("没有检测到噪点");
+        } else {
+            if (count == gpsList.size()) {
+                System.out.println("去噪轨迹速度设置偏小，GPS点被误认为是噪点");
+            } else {
+                System.out.println("检测到噪点，数量为：" + (gpsList.size() - count));
+            }
+        }
+    }
+
+    public static List<GpsPoint> readGpsPoint() throws Exception {
+        URI uri = Objects.requireNonNull(TrajNoiseFilter.class.getClassLoader().getResource("trajectory_noisefilter.txt")).toURI();
+        List<String> lines = Files.readAllLines(Paths.get(uri));
+        String wkt = lines.get(0);
+        LineString lineString = (LineString) new WKTReader().read(wkt);
+        List<GpsPoint> gpsPointList = new ArrayList<>(lineString.getNumPoints());
+        for (int i = 0; i < lineString.getNumPoints(); i++) {
+            Point geom = lineString.getPointN(i);
+            Timestamp time = new Timestamp((long) geom.getCoordinate().getM());
+            gpsPointList.add(new GpsPoint("oid", lineString.getCoordinateN(i), time));
+        }
+        return gpsPointList;
     }
 }

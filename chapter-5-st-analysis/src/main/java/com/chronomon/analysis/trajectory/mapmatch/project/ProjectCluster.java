@@ -1,13 +1,13 @@
 package com.chronomon.analysis.trajectory.mapmatch.project;
 
 import com.chronomon.analysis.trajectory.model.DistanceUtil;
-import com.chronomon.analysis.trajectory.model.GpsPoint;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.strtree.STRtree;
 import com.chronomon.analysis.trajectory.road.ReversedRoadSegment;
 import com.chronomon.analysis.trajectory.road.RoadNetwork;
 import com.chronomon.analysis.trajectory.road.RoadSegment;
 import com.chronomon.analysis.trajectory.road.RoadSegmentVisitor;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.index.strtree.STRtree;
+import com.chronomon.analysis.trajectory.model.GpsPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +63,9 @@ public class ProjectCluster {
      * @return 最大概率投影点在projectPointList中的位置
      */
     public Integer bestIndex() {
+        if (mustPassIndex != -1) {
+            return mustPassIndex;
+        }
         Integer bestIndex = null;
         double bestMetric = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < projectPointList.size(); i++) {

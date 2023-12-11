@@ -1,12 +1,12 @@
 package com.chronomon.analysis.trajectory.mapmatch.project;
 
-import com.chronomon.analysis.trajectory.model.DistanceUtil;
-import com.chronomon.analysis.trajectory.road.IRoadSegment;
-import com.chronomon.analysis.trajectory.road.RoadSegment;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.operation.distance.GeometryLocation;
+import com.chronomon.analysis.trajectory.road.IRoadSegment;
+import com.chronomon.analysis.trajectory.road.RoadSegment;
+import com.chronomon.analysis.trajectory.model.DistanceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +59,6 @@ public class ProjectPoint {
      */
     private List<IRoadSegment> pathSegments;
 
-    /**
-     * 如果当前投影点与前置投影点之间的路网距离是其直线距离的3倍，
-     * 则认为物体不可能是从上一个投影点移动到当前投影点，标记当前
-     * 投影点的正常状态为false
-     */
-    private boolean isNormal = true;
 
     public ProjectPoint(IRoadSegment roadSegment, int segmentIndex,
                         Point point, double projectDistInM,
@@ -86,14 +80,6 @@ public class ProjectPoint {
 
     public void setPathSegments(List<IRoadSegment> pathSegments) {
         this.pathSegments = pathSegments;
-    }
-
-    public void setNormal(boolean normal) {
-        isNormal = normal;
-    }
-
-    public boolean isNormal() {
-        return isNormal;
     }
 
     public double getMetric() {

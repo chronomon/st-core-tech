@@ -1,5 +1,6 @@
 package com.chronomon.analysis.trajectory.segment;
 
+import com.chronomon.analysis.trajectory.filter.TrajNoiseFilter;
 import com.chronomon.analysis.trajectory.model.GpsPoint;
 import com.chronomon.analysis.trajectory.model.Trajectory;
 import com.chronomon.analysis.trajectory.staypoint.TrajStayPointDetector;
@@ -39,5 +40,20 @@ public class TrajSegmenter {
             subTrajectoryList.add(new Trajectory(trajectory.getOid(), gpsPointList.subList(startIndex, gpsPointList.size())));
         }
         return subTrajectoryList;
+    }
+
+    public static void main(String[] args) throws Exception {
+        List<GpsPoint> gpsList = TrajNoiseFilter.readGpsPoint();
+        Trajectory rawTrajectory = new Trajectory("oid", gpsList, true);
+        List<Trajectory> subTrajectoryList = TrajSegmenter.sliceByTimeInterval(rawTrajectory, 300);
+        System.out.println(subTrajectoryList.size());
+
+        int count = 0;
+        for (Trajectory subTrajectory : subTrajectoryList) {
+            System.out.println(subTrajectory.getLineString().toText());
+            count += subTrajectory.getNumPoints();
+        }
+        System.out.println(rawTrajectory.getNumPoints());
+        System.out.println(count);
     }
 }

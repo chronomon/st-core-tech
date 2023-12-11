@@ -9,6 +9,9 @@ import java.util.List;
 
 /**
  * 路段接口
+ *
+ * @author wangrubin
+ * @date 2023-11-05
  */
 public interface IRoadSegment {
 

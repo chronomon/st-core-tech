@@ -11,6 +11,9 @@ import org.locationtech.spatial4j.shape.jts.JtsPoint;
 
 /**
  * 距离计算工具
+ *
+ * @author wangrubin
+ * @date 2023-11-05
  */
 public class DistanceUtil {
 

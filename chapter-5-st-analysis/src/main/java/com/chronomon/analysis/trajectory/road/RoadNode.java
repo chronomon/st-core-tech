@@ -2,6 +2,12 @@ package com.chronomon.analysis.trajectory.road;
 
 import org.locationtech.jts.geom.Point;
 
+/**
+ * 路网节点
+ *
+ * @author wangrubin
+ * @date 2023-11-05
+ */
 public class RoadNode {
 
     public final int nodeId;

@@ -69,8 +69,7 @@ public class TrajMapMatchFunction extends KeyedProcessFunction<String, GpsPoint,
 
         String oid = gpsPoint.getOid();
         if (currNode.projectCluster.isStuck) {
-            // 当前节点与前置节点不连通
-            // 输出匹配结果
+            // 当前节点与前置节点不连通, 输出匹配结果
             List<MapMatchTrajectory> matchedPaths = hmmMapMatcher.buildMatchedTrajectory(oid, currNode);
             matchedPaths.forEach(collector::collect);
             // 清空缓存(断开链表方便垃圾回收)
@@ -78,8 +77,6 @@ public class TrajMapMatchFunction extends KeyedProcessFunction<String, GpsPoint,
             currNode.setPrevNode(null);
         } else if (prevNode.projectCluster.mustPassIndex != -1) {
             // 前置节点中存在必经投影点，将前置节点之前的所有缓存内容输出
-            prevNode.projectCluster.getProjectPoint(prevNode.projectCluster.mustPassIndex).setMetric(Double.POSITIVE_INFINITY);
-            // 输出匹配结果
             List<MapMatchTrajectory> matchedPaths = hmmMapMatcher.buildMatchedTrajectory(oid, prevNode);
             matchedPaths.forEach(collector::collect);
             // 清空缓存(断开链表方便垃圾回收)

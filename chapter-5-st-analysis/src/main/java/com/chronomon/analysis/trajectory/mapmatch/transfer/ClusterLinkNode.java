@@ -22,7 +22,7 @@ public class ClusterLinkNode {
      * 两个GPS点之间的最大时间间隔，如果超过值，则将轨迹进行分段后再匹配
      * 因为如果两个GPS点之间的时间跨度很大时，预测出来的路径也就没有意义
      */
-    private static final int MAX_TIME_INTERVAL_IN_SEC = 300;
+    private static final int MAX_TIME_INTERVAL_IN_SEC = Integer.MAX_VALUE;
 
     /**
      * 当前节点中存储的投影点簇
@@ -74,7 +74,7 @@ public class ClusterLinkNode {
         this.nextNode = nextNode;
     }
 
-    public void mapMatch(RoadNetwork rn, HmmProbability hmmProbability) {
+    public double mapMatch(RoadNetwork rn, HmmProbability hmmProbability) {
         List<ProjectPoint> currProjectPoints = projectCluster.projectPointList;
 
         if (prevNode != null &&
@@ -92,12 +92,13 @@ public class ClusterLinkNode {
                     .collect(Collectors.toSet());
 
             //计算两个投影点之间的最短路径
-            ShortestPathCalculator calculator = new ShortestPathCalculator(rn);
-            ShortestPathCalculator.ShortestPathSet shortestPathSet = calculator.calculate(prevRoadNodes, currRoadNodes);
+           ShortestPathCalculator calculator = new ShortestPathCalculator(rn);
+           ShortestPathCalculator.ShortestPathSet shortestPathSet = calculator.calculate(prevRoadNodes, currRoadNodes);
 
             //计算当前GPS点对应投影点的概率值
             int unConnectiveCount = 0;
             List<ProjectPoint> validCurrProjectPoints = new ArrayList<>(currProjectPoints.size());
+            double minGraphDistance = Double.MAX_VALUE;
             for (ProjectPoint currProjectPoint : currProjectPoints) {
                 double emissionProbability = hmmProbability.emissionProbability(currProjectPoint.projectDistInM);
 
@@ -148,15 +149,12 @@ public class ClusterLinkNode {
                     }
                 }
                 //save hmm metric of the current project point
-                if (bestPrevIndex != -1) {
+                if (bestPrevIndex != -1  && bestGraphDistance / bestLinearDistance < 5) {
                     currProjectPoint.setPrevIndex(bestPrevIndex);
                     currProjectPoint.setMetric(bestMetric);
                     currProjectPoint.setPathSegments(bestPathSegments);
-                    if (bestGraphDistance / bestLinearDistance > 3) {
-                        // 如果路网距离是直线距离的3倍以上，标记为异常
-                        currProjectPoint.setNormal(false);
-                    }
                     validCurrProjectPoints.add(currProjectPoint);
+                    minGraphDistance = Math.min(minGraphDistance, bestGraphDistance);
                 } else {
                     currProjectPoint.setMetric(emissionProbability);
                     currProjectPoint.setPathSegments(Collections.emptyList());
@@ -176,6 +174,7 @@ public class ClusterLinkNode {
                     //notice: 道路的方向对必经点的跨度影响很大，不能粗暴地将路段都设成双向
                     prevNode.projectCluster.mustPassIndex = validPrevIndexList.get(0);
                 }
+                return minGraphDistance;
             }
         } else {
             // 前置点为空，或者前后两GPS的时间差过大时，认为前后两GPS不连通，初始概率值为发射概率
@@ -185,5 +184,6 @@ public class ClusterLinkNode {
                 projectPoint.setMetric(metric);
             }
         }
+        return Double.MAX_VALUE;
     }
 }

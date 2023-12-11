@@ -1,5 +1,11 @@
 package com.chronomon.analysis.trajectory.road;
 
+/**
+ * 道路方向枚举
+ *
+ * @author wangrubin
+ * @date 2023-11-05
+ */
 public enum DirectionEnum {
     DUAL_DIRECT(1, "双向"),
     FORWARD_DIRECT(2, "正向"),

@@ -1,22 +1,28 @@
 package com.chronomon.analysis.trajectory.mapmatch;
 
+import com.chronomon.analysis.trajectory.filter.TrajNoiseFilter;
 import com.chronomon.analysis.trajectory.mapmatch.project.ProjectCluster;
 import com.chronomon.analysis.trajectory.mapmatch.project.ProjectPoint;
 import com.chronomon.analysis.trajectory.mapmatch.transfer.ClusterLinkNode;
 import com.chronomon.analysis.trajectory.mapmatch.transfer.HmmProbability;
-import com.chronomon.analysis.trajectory.model.DefaultUtil;
-import com.chronomon.analysis.trajectory.model.GpsPoint;
-import com.chronomon.analysis.trajectory.model.Trajectory;
+import com.chronomon.analysis.trajectory.model.CoordinateUtil;
+import com.chronomon.analysis.trajectory.road.DirectionEnum;
 import com.chronomon.analysis.trajectory.road.IRoadSegment;
 import com.chronomon.analysis.trajectory.road.RoadNetwork;
+import com.chronomon.analysis.trajectory.model.GpsPoint;
+import com.chronomon.analysis.trajectory.model.Trajectory;
+import com.chronomon.analysis.trajectory.road.RoadSegment;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 基于隐马尔科夫模型的轨迹地图匹配器
@@ -81,18 +87,17 @@ public class HmmMapMatcher {
 
         // 从前到后收集最优路径上的坐标点，形成地图匹配之后的轨迹
         List<MapMatchTrajectory> matchPathList = new ArrayList<>();
-        List<Coordinate> coordinateList = new ArrayList<>();
+        List<GpsPoint> gpsPointList = new ArrayList<>();
         Timestamp startTime = currNode.projectCluster.gpsPoint.getTime();
         while (currNode.hasNext()) {
             ClusterLinkNode nextNode = currNode.next();
             if (nextNode.projectCluster.isStuck) {
-                if (coordinateList.size() > 1) {
-                    LineString matchedPath = DefaultUtil.GEOMETRY_FACTORY.createLineString(coordinateList.toArray(new Coordinate[0]));
+                if (gpsPointList.size() > 1) {
                     Timestamp endTime = currNode.projectCluster.gpsPoint.getTime();
-                    matchPathList.add(new MapMatchTrajectory(oid, startTime, endTime, matchedPath));
+                    matchPathList.add(new MapMatchTrajectory(oid, startTime, endTime, gpsPointList));
                     startTime = nextNode.projectCluster.gpsPoint.getTime();
                 }
-                coordinateList = new ArrayList<>();
+                gpsPointList = new ArrayList<>();
             } else {
                 int currConfirmedIndex = currNode.projectCluster.markedIndex;
                 ProjectPoint currentProject = currNode.projectCluster.getProjectPoint(currConfirmedIndex);
@@ -101,12 +106,21 @@ public class HmmMapMatcher {
                 assert currConfirmedIndex == nextProjectPoint.getPrevIndex();
 
                 if (currentProject.onSameSegmentAndBefore(nextProjectPoint)) {
-                    coordinateList.add(currentProject.point.getCoordinate());
+                    // 将当前GPS点的时间存储成坐标点的Z值
+                    GpsPoint gpsPoint = new GpsPoint(oid, currentProject.point.getCoordinate());
+                    gpsPoint.setTime(currNode.projectCluster.gpsPoint.getTime());
+                    gpsPointList.add(gpsPoint);
+
+                    // 最短路径上的坐标点没有时间值
                     IRoadSegment roadSegment = currentProject.roadSegment;
                     for (int i = currentProject.segmentIndex + 1; i <= nextProjectPoint.segmentIndex; i++) {
-                        coordinateList.add(roadSegment.getCoordinateN(i));
+                        gpsPointList.add(new GpsPoint(oid, roadSegment.getCoordinateN(i)));
                     }
-                    coordinateList.add(nextProjectPoint.point.getCoordinate());
+
+                    // 将下一个GPS点的时间存储成坐标点的Z值
+                    gpsPoint = new GpsPoint(oid, nextProjectPoint.point.getCoordinate());
+                    gpsPoint.setTime(nextNode.projectCluster.gpsPoint.getTime());
+                    gpsPointList.add(gpsPoint);
                 } else {
                     List<IRoadSegment> pathSegments = nextProjectPoint.getPathSegments();
                     if (pathSegments == null || pathSegments.isEmpty()) {
@@ -117,19 +131,27 @@ public class HmmMapMatcher {
                             assert pathSegments.get(i).getToNode().geom.getCoordinate().equals(pathSegments.get(i + 1).getFromNode().geom.getCoordinate());
                         }
                     }
-                    if (nextProjectPoint.isNormal()) {
-                        coordinateList.addAll(currentProject.getSuffixCoordinates());
-                        coordinateList.addAll(nextProjectPoint.getPrefixCoordinates());
-                    }
+                    // 当前投影点到投影路段终点之间的坐标点，第一个坐标点是GPS的投影点，时间存储在Z中
+                    List<GpsPoint> suffixCoordinateList = currentProject.getSuffixCoordinates()
+                            .stream().map(coordinate -> new GpsPoint(oid, coordinate))
+                            .collect(Collectors.toList());
+                    suffixCoordinateList.get(0).setTime(currNode.projectCluster.gpsPoint.getTime());
+                    gpsPointList.addAll(suffixCoordinateList);
+
+                    // 当前投影路段终点到下一个投影点之间的坐标点，最后一个坐标点是GPS的投影点，时间存储在Z中
+                    List<GpsPoint> prefixCoordinateList = nextProjectPoint.getPrefixCoordinates()
+                            .stream().map(coordinate -> new GpsPoint(oid, coordinate))
+                            .collect(Collectors.toList());
+                    prefixCoordinateList.get(prefixCoordinateList.size() - 1).setTime(nextNode.projectCluster.gpsPoint.getTime());
+                    gpsPointList.addAll(prefixCoordinateList);
                 }
             }
             currNode = nextNode;
         }
 
-        if (coordinateList.size() > 1) {
-            LineString matchedPath = DefaultUtil.GEOMETRY_FACTORY.createLineString(coordinateList.toArray(new Coordinate[0]));
+        if (gpsPointList.size() > 1) {
             Timestamp endTime = currNode.projectCluster.gpsPoint.getTime();
-            matchPathList.add(new MapMatchTrajectory(oid, startTime, endTime, matchedPath));
+            matchPathList.add(new MapMatchTrajectory(oid, startTime, endTime, gpsPointList));
         }
         return matchPathList;
     }
@@ -173,5 +195,52 @@ public class HmmMapMatcher {
         }
 
         return head;
+    }
+
+    public static void main(String[] args) throws Exception {
+        RoadNetwork rn = readRoadNetwork();
+        Trajectory trajectory = readTrajectory();
+        HmmMapMatcher mapMatcher = new HmmMapMatcher(rn, 50.0);
+        List<MapMatchTrajectory> mapMatchTrajectories = mapMatcher.mapMatch(trajectory);
+        for (MapMatchTrajectory mapMatchTrajectory : mapMatchTrajectories) {
+            System.out.println(mapMatchTrajectory.toTrajectory().getLineString());
+        }
+    }
+
+    public static RoadNetwork readRoadNetwork() throws Exception {
+        List<RoadSegment> roadSegmentList = new ArrayList<>();
+        URI uri = Objects.requireNonNull(TrajNoiseFilter.class.getClassLoader().getResource("road_mapmatch.csv")).toURI();
+        List<String> lines = Files.readAllLines(Paths.get(uri));
+        for (String line : lines) {
+            roadSegmentList.add(parseRoadSegment(line));
+        }
+        return new RoadNetwork(roadSegmentList, false);
+    }
+
+    private static RoadSegment parseRoadSegment(String line) throws ParseException {
+        String[] record = line.split("\t");
+        LineString lineString = (LineString) new WKTReader().read(record[0]);
+        int direction;
+        if (Objects.equals(record[4], "F")) {
+            direction = 2;
+        } else if (Objects.equals(record[4], "T")) {
+            direction = 1;
+        } else {
+            direction = 1;
+        }
+        DirectionEnum directionEnum = DirectionEnum.getByCode(direction);
+        return new RoadSegment(lineString, directionEnum);
+    }
+
+    public static Trajectory readTrajectory() throws Exception {
+        List<GpsPoint> gpsPointList = new ArrayList<>();
+        URI uri = Objects.requireNonNull(TrajNoiseFilter.class.getClassLoader().getResource("trajectory_mapmatch.txt")).toURI();
+        List<String> lines = Files.readAllLines(Paths.get(uri));
+        for (String line : lines) {
+            String[] split = line.split("\t");
+            Coordinate coordinate = CoordinateUtil.gcj02ToWgs84(Double.parseDouble(split[0]), Double.parseDouble(split[1]));
+            gpsPointList.add(new GpsPoint("oid", coordinate, Timestamp.valueOf(split[2])));
+        }
+        return new Trajectory("oid", gpsPointList, true);
     }
 }

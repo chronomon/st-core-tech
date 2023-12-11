@@ -1,5 +1,6 @@
 package com.chronomon.analysis.trajectory.staypoint;
 
+import com.chronomon.analysis.trajectory.filter.TrajNoiseFilter;
 import com.chronomon.analysis.trajectory.model.DistanceUtil;
 import com.chronomon.analysis.trajectory.model.GpsPoint;
 import com.chronomon.analysis.trajectory.model.Trajectory;
@@ -102,5 +103,24 @@ public class TrajStayPointDetector {
             this.startIndex = startIndex;
             this.endIndex = endIndex;
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        List<GpsPoint> gpsList = TrajNoiseFilter.readGpsPoint();
+        Trajectory rawTrajectory = new Trajectory("oid", gpsList, true);
+        TrajStayPointDetector stayPointDetector = new TrajStayPointDetector(50, 100);
+
+        int count = 0;
+        List<StayPoint> stayPointList = stayPointDetector.detectStayPoint(rawTrajectory);
+        for (StayPoint stayPoint : stayPointList) {
+            count += stayPoint.gpsPointList.size();
+        }
+
+        List<Trajectory> subTrajectoryList = stayPointDetector.sliceTrajectory(rawTrajectory);
+        for (Trajectory subTrajectory : subTrajectoryList) {
+            count += subTrajectory.getNumPoints();
+        }
+
+        assert (count - subTrajectoryList.size() * 2 == rawTrajectory.getNumPoints());
     }
 }
