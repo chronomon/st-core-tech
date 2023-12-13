@@ -8,7 +8,7 @@ import lombok.ToString;
 /**
  * 响应实体类
  *
- * @author jimo
+ * @author suiyuan
  * @date 2019-09-04
  */
 @Data
@@ -18,19 +18,10 @@ public class ResponseResult<T> {
     /**
      * 状态码
      */
-    private int resultCode;
-    /**
-     * 新版状态码
-     */
     private int code;
 
     /**
      * 信息
-     */
-    private String resultMsg;
-
-    /**
-     * 新版信息
      */
     private String message;
 
@@ -45,8 +36,6 @@ public class ResponseResult<T> {
     private T data;
 
     public ResponseResult(int code, String message, Long tid, T data) {
-        this.resultCode = code;
-        this.resultMsg = message;
         this.code = code;
         this.message = message;
         this.tid = tid;

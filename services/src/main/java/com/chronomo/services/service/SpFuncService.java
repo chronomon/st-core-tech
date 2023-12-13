@@ -1,8 +1,10 @@
 package com.chronomo.services.service;
 
+import com.chronomo.services.util.QueryUtil;
+import org.geotools.filter.text.cql2.CQLException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.io.IOException;
 
 /**
  * @Description
@@ -13,14 +15,18 @@ import java.util.List;
 @Service
 public class SpFuncService {
 
-    public List<String> queryByPlg(){
-        return null;
+    private static final String POI_SFT_MAME = "poi";
+
+
+    public String queryByPlg(String plgWkt) throws IOException, CQLException {
+        return QueryUtil.queryFeaturesByPlg(POI_SFT_MAME, plgWkt);
     }
 
-    public List<String> queryByBbox(){
-        return null;
+    public String queryByBbox(double minx, double miny, double maxx, double maxy) throws IOException, CQLException {
+        return QueryUtil.queryFeaturesByBBOX(POI_SFT_MAME, minx, miny, maxx, maxy);
     }
-    public List<String> queryByRadius(){
-        return null;
+
+    public String queryByRadius(double x, double y, double radiusM) throws IOException, CQLException {
+        return QueryUtil.queryFeaturesByRadius(POI_SFT_MAME, x, y, radiusM);
     }
 }

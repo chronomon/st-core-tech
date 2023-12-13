@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <gt.version>23.3</gt.version>
     </properties>
 
     <dependencies>
@@ -42,22 +43,27 @@
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-main</artifactId>
-            <version>23.3</version>
+            <version>${gt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-geopkg</artifactId>
-            <version>23.3</version>
+            <version>${gt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-epsg-hsql</artifactId>
-            <version>23.3</version>
+            <version>${gt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-cql</artifactId>
-            <version>23.3</version>
+            <version>${gt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geojson</artifactId>
+            <version>${gt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.locationtech.spatial4j</groupId>
