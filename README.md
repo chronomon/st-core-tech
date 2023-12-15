@@ -1,8 +1,8 @@
-# What is this
+# 介绍
 《时空大数据系统核心技术》的配套代码，工程里每个模块和书中的章节相对应。这个代码库的目的是为了帮助读者更快的应用这些算法，因此我们没有过多地深入到算法的细节中，而是着重呈现它们最常用的使用方法。文章内提到的算法都提供了包含Main方法的可执行类，用户可以查看执行类内包含的java工具包，以及使用方法。
 
 ## 阅读指引
-### 第4章：数据存储与索引
+### 第4章：数据存储与索引（chapter-4-st-storage）
 + 4.1、空间数据模型
   + 4.1.1、空间数据模型 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryDataType.java)
   + 4.1.2、空间数据特性 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryValidation.java)
@@ -17,7 +17,7 @@
     + GeoHash编码 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/curve/GeoHash.java)
     + XZ曲线 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/curve/XZOrderIndex.java)
 
-### 第5章：时空大数据分析与挖掘
+### 第5章：数据分析与挖掘（chapter-5-st-analysis）
 + 5.2、几何分析
   + 5.2.1、凸包计算 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/convex/ConvexHull.java)
 + 5.3、空间聚类
@@ -48,7 +48,23 @@
 + 5.6、地址搜索
   + 5.6.1、正地理编码
     + 基于地理层级树的滑窗匹配算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/address/AddressSearch.java)
-### 第7章：数据可视化
+### 第6章：数据服务与共享（chapter-6-st-service）
+**说明：**
+本节代码构建了一个简单的Springboot项目，简单实现了第6章提到的三类接口，WFS、WMS和WMTS，另外还有一个类控件查询
++ WFS
++ WMS
++ WMTS
++ Query
+  + 基于多边形范围查询
+  + 基于矩形范围查询
+  + 基于点和半径的周围查询
+
+整个架构如下图所示，服务层基于Springboot，数据访问层基于GeoTools，底层使用GeoPackage存储
+<div align="center">
+<img src="supplements/resource/chapter-6-1.png" width="300px">
+</div>
+
+### 第7章：数据可视化（chapter-7-st-visualization）
 + 7.2、时空数据可视化
   + 7.2.5、 动态矢量切片服务[[代码链接]](chapter-7-st-visualization/src/main/java/com/chronomon/visualization/vector/controller/VectorTileController.java)
 
