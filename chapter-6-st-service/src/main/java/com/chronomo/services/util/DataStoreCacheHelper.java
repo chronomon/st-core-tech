@@ -6,6 +6,7 @@ import org.geotools.data.DataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,16 +62,13 @@ public class DataStoreCacheHelper {
      * @throws IOException IOException
      */
     private DataStore initDataStore() throws IOException {
-        Map params = new HashMap();
+        URL url = this.getClass().getClassLoader().getResource("data/service_data.gpkg");
+        assert url != null;
+        String path = url.getFile();
+        Map<String, Object> params = new HashMap<>(3);
         params.put("dbtype", "geopkg");
-        params.put("database", "/D:/2-data/2-personal/4-data/st-core-tech/service_data.gpkg");
+        params.put("database", path);
         params.put("read-only", true);
-//
-//        String catalog = PropertiesHelper.getInstance().getValue("cluster.config", "catalog");
-//        String zookeepers = PropertiesHelper.getInstance().getValue("cluster.config", "hbase.zookeepers");
-//        Map<String, String> params = new HashMap<>(2);
-//        params.put("hbase.zookeepers", zookeepers);
-//        params.put("hbase.catalog", catalog);
         return DataStoreFinder.getDataStore(params);
     }
 }
