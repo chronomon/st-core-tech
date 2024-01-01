@@ -31,6 +31,9 @@ import java.io.IOException;
 @Service
 public class WmsService {
 
+    /**
+     * 默认数据集名称
+     */
     private static final String POI_SFT_MAME = "poi";
 
     /**
