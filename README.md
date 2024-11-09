@@ -1,71 +1,71 @@
-# 介绍
-《时空大数据系统核心技术》的配套代码，工程里每个模块和书中的章节相对应。这个代码库的目的是为了帮助读者更快的应用这些算法，因此我们没有过多地深入到算法的细节中，而是着重呈现它们最常用的使用方法。文章内提到的算法都提供了包含Main方法的可执行类，用户可以查看执行类内包含的java工具包，以及使用方法。
+# Introduction
+The supporting code for "Core Technologies of Spatio-temporal Big Data System". Each module in the project corresponds to the chapters in the book. The purpose of this code repository is to help readers apply these algorithms more quickly. Therefore, we do not delve too much into the details of the algorithms, but rather focus on presenting their most commonly used usage methods. All the algorithms mentioned in the article provide executable classes containing the Main method. Users can view the Java toolkits contained in the execution classes and the usage methods.
 
-## 阅读指引
-### 第4章：数据存储与索引（chapter-4-st-storage）
-+ 4.1、空间数据模型
-  + 4.1.1、空间数据模型 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryDataType.java)
-  + 4.1.2、空间数据特性 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryValidation.java)
-  + 4.1.3、空间拓扑关系 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryTopologyRelation.java)
-+ 4.2、时空索引算法
-  + 4.2.2、基于树状结构的空间索引
-    + KdTreeIndex [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/tree/KdTreeIndex.java)
-    + QuadTreeIndex [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/tree/QuadTreeIndex.java)
-    + RTreeIndex [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/tree/RTreeIndex.java)
-  + 4.2.3、基于填充曲线的时空索引
-    + Z曲线 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/curve/ZOrderIndex.java)
-    + GeoHash编码 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/curve/GeoHash.java)
-    + XZ曲线 [[代码链接]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/curve/XZOrderIndex.java)
+## Reading Guide
+### Chapter 4: Data Storage and Indexing (chapter-4-st-storage)
++ 4.1、Spatial data model
+  + 4.1.1、Spatial data model [[code link]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryDataType.java)
+  + 4.1.2、Spatial data characteristics [[code link]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryValidation.java)
+  + 4.1.3、Spatial topological relationship [[code link]](chapter-4-st-storage/src/main/java/com/chronomon/storage/model/GeometryTopologyRelation.java)
++ 4.2、Spatio-temporal indexing algorithms
+  + 4.2.2、Spatial indexing based on tree structure
+    + KdTreeIndex [[code link]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/tree/KdTreeIndex.java)
+    + QuadTreeIndex [[code link]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/tree/QuadTreeIndex.java)
+    + RTreeIndex [[code link]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/tree/RTreeIndex.java)
+  + 4.2.3、Spatio-temporal indexing based on filling curve
+    + Z curve [[code link]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/curve/ZOrderIndex.java)
+    + GeoHash encode [[code link]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/curve/GeoHash.java)
+    + XZ curve [[code link]](chapter-4-st-storage/src/main/java/com/chronomon/storage/index/curve/XZOrderIndex.java)
 
-### 第5章：数据分析与挖掘（chapter-5-st-analysis）
-+ 5.2、几何分析
-  + 5.2.1、凸包计算 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/convex/ConvexHull.java)
-+ 5.3、空间聚类
-  + 5.3.1、KMeans [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/cluster/KMeansPlusPlusCluster.java)
-  + 5.3.2、DBSCAN [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/cluster/DBSCANCluster.java)
-+ 5.4、轨迹分析
-  + 5.4.1、轨迹预处理
-    + 轨迹去噪 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/filter/TrajNoiseFilter.java)
-    + 驻留点检测 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/staypoint/TrajStayPointDetector.java)
-    + 轨迹分段 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/segment/TrajSegmenter.java)
-    + 路网匹配 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/mapmatch/HmmMapMatcher.java)
-  + 5.4.2、轨迹挖掘
-    + 轨迹压缩 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/compress/TrajectoryCompress.java)
-    + 轨迹相似性 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/similarity/TrajectorySimilarity.java)
-    + 轨迹聚类 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/cluster/TrajectoryCluster.java)
-    + 时空共现 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/cooccur/SocialStrengthInfer.java)
-  + 5.4.3、实时轨迹分析
-    + 实时GPS点排序 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/flink/GpsStreamSortFunction.java)
-    + 实时车辆行驶状态检测 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/flink/TrajStayPointDetectFunction.java)
-    + 实时轨迹地图匹配 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/flink/TrajMapMatchFunction.java)
-+ 5.5、路径规划
-  + 5.5.1、DFS和BFS
-    + 深度优先搜索DFS [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/DFSModel.java)
-    + 广度优先搜索BFS [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/BFSModel.java)
-  + 5.5.2、Dijkstra算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/DijkstraModel.java)
-  + 5.5.3、GBFS算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/GBFSModel.java)
-  + 5.5.4、A*算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/AStarModel.java)
-+ 5.6、地址搜索
-  + 5.6.1、正地理编码
-    + 基于地理层级树的滑窗匹配算法 [[代码链接]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/address/AddressSearch.java)
-### 第6章：数据服务与共享（chapter-6-st-service）
-**说明：**
-本节代码构建了一个简单的Springboot项目，简单实现了第6章提到的三类接口，WFS、WMS和WMTS，另外还有一个类控件查询
+### Chapter 5: Data Analysis and Mining (chapter-5-st-analysis)
++ 5.2、Geometric analysis
+  + 5.2.1、Convex hull calculation [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/convex/ConvexHull.java)
++ 5.3、Spatial clustering
+  + 5.3.1、KMeans [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/cluster/KMeansPlusPlusCluster.java)
+  + 5.3.2、DBSCAN [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/cluster/DBSCANCluster.java)
++ 5.4、Trajectory analysis
+  + 5.4.1、Trajectory preprocessing
+    + Trajectory denoising [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/filter/TrajNoiseFilter.java)
+    + Stay point detection [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/staypoint/TrajStayPointDetector.java)
+    + Trajectory segmentation [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/segment/TrajSegmenter.java)
+    + Map matching [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/mapmatch/HmmMapMatcher.java)
+  + 5.4.2、Trajectory mining
+    + Trajectory compression [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/compress/TrajectoryCompress.java)
+    + Trajectory similarity [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/similarity/TrajectorySimilarity.java)
+    + Trajectory clustering [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/cluster/TrajectoryCluster.java)
+    + Spatio-temporal co-occurrence [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/cooccur/SocialStrengthInfer.java)
+  + 5.4.3、Real-time trajectory analysis
+    + Real-time GPS point sorting [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/flink/GpsStreamSortFunction.java)
+    + Real-time vehicle driving state detection [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/flink/TrajStayPointDetectFunction.java)
+    + Real-time trajectory map matching [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/trajectory/flink/TrajMapMatchFunction.java)
++ 5.5、Path planning
+  + 5.5.1、DFS and BFS
+    + Depth-first search DFS [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/DFSModel.java)
+    + Breadth-first search BFS [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/BFSModel.java)
+  + 5.5.2、Dijkstra algorithm [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/DijkstraModel.java)
+  + 5.5.3、GBFS algorithm [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/GBFSModel.java)
+  + 5.5.4、A* algorithm [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/path/AStarModel.java)
++ 5.6、Address search
+  + 5.6.1、geocoding
+    + Sliding window matching algorithm based on geographical hierarchy tree [[code link]](chapter-5-st-analysis/src/main/java/com/chronomon/analysis/address/AddressSearch.java)
+### Chapter 6: Data Service and Sharing (chapter-6-st-service)
+**Description：**
+The code in this section builds a simple Springboot project and simply implements the three types of interfaces mentioned in Chapter 6, WFS, WMS, and WMTS. There is also a class control query.
 + WFS
 + WMS
 + WMTS
 + Query
-  + 基于多边形范围查询
-  + 基于矩形范围查询
-  + 基于点和半径的周围查询
+  + Query based on polygonal range
+  + Query based on rectangular range
+  + Surrounding query based on point and radius
 
-整个架构如下图所示，服务层基于Springboot，数据访问层基于GeoTools，底层使用GeoPackage存储
+The entire architecture is shown in the following figure. The service layer is based on Springboot, the data access layer is based on GeoTools, and GeoPackage is used for storage at the bottom layer.
 <div align="center">
 <img src="supplements/resource/chapter-6-1.png" width="300px">
 </div>
 
-### 第7章：数据可视化（chapter-7-st-visualization）
-+ 7.2、时空数据可视化
-  + 7.2.5、 动态矢量切片服务[[代码链接]](chapter-7-st-visualization/src/main/java/com/chronomon/visualization/vector/controller/VectorTileController.java)
+### Chapter 7: Data Visualization (chapter-7-st-visualization)
++ 7.2、Spatio-temporal data visualization
+  + 7.2.5、 Dynamic vector tile service[[code link]](chapter-7-st-visualization/src/main/java/com/chronomon/visualization/vector/controller/VectorTileController.java)
 
  

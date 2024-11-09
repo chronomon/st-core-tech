@@ -292,7 +292,7 @@ public class AddressSearch {
     }
 
     public static void main(String[] args) throws Exception {
-        // 省、市、区、街道、社区、小区、楼栋、单元、门牌号，层级分别为1-9
+        // Province, city, district, street, community, residential area, building, unit, doorplate number, region levels are 1-9
         String filePath = Objects.requireNonNull(AddressSearch.class.getResource("/tree.txt")).getPath();
         FileInputStream in = new FileInputStream(filePath);
         InputStreamReader reader = new InputStreamReader(in);
